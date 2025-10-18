@@ -1,0 +1,168 @@
+# ===== 通用忽略规则 =====
+# 操作系统生成的文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE和编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 日志文件
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.temp
+
+# 压缩文件
+*.zip
+*.tar.gz
+*.rar
+
+# ===== API密钥和敏感信息 =====
+# 环境变量文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# API密钥配置文件
+config/api-keys.json
+config/secrets.json
+application-secrets.yml
+application-secrets.properties
+
+# 证书文件
+*.pem
+*.key
+*.crt
+*.p12
+*.jks
+
+# ===== 前端 (Vue.js) =====
+# 依赖
+frontend/node_modules/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# 构建输出
+frontend/dist/
+frontend/build/
+
+# 缓存
+frontend/.cache/
+frontend/.parcel-cache/
+frontend/.vite/
+
+# 测试覆盖率
+frontend/coverage/
+
+# ===== 后端 (Spring Boot) =====
+# Maven
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/.mvn/wrapper/maven-wrapper.properties
+
+# Gradle
+backend/.gradle/
+backend/build/
+backend/gradle/wrapper/gradle-wrapper.jar
+backend/gradle/wrapper/gradle-wrapper.properties
+
+# Spring Boot
+backend/application-*.yml
+backend/application-*.properties
+!backend/application.yml
+!backend/application.properties
+
+# Java编译文件
+backend/*.class
+backend/*.jar
+backend/*.war
+backend/*.ear
+backend/*.zip
+backend/*.tar.gz
+backend/*.rar
+
+# JVM崩溃日志
+backend/hs_err_pid*
+
+# ===== 数据库 =====
+# 本地数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 数据库备份
+*.sql.backup
+*.dump
+
+# ===== Docker =====
+# Docker相关
+.dockerignore
+docker-compose.override.yml
+
+# ===== 部署相关 =====
+# 部署脚本中的敏感信息
+deploy/*.env
+deploy/secrets/
+
+# Kubernetes配置中的敏感信息
+k8s/secrets/
+k8s/*-secret.yml
+
+# ===== 文档和资源 =====
+# 临时文档
+*.draft.md
+*.temp.md
+
+# 大文件
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.iso
+
+# ===== 测试相关 =====
+# 测试报告
+test-results/
+coverage/
+.nyc_output/
+
+# ===== 其他 =====
+# 备份文件
+*.bak
+*.backup
+*.old
+
+# 缓存目录
+.cache/
+cache/
+
+# 上传文件目录（开发环境）
+uploads/
+files/
+
+# 第三方库和工具
+vendor/
+lib/
+
+# 性能分析文件
+*.prof
+*.heap
+
+# 监控和日志
+monitoring/
+metrics/

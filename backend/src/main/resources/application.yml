@@ -1,0 +1,54 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  servlet:
+    multipart:
+      max-file-size: 512MB
+      max-request-size: 512MB
+      enabled: true
+  application:
+    name: uniMiner
+  datasource:
+    url: jdbc:mysql://localhost:3306/travel_planner
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 12345
+
+  webflux:
+    cors:
+      allowed-origins: "*"
+      allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+      allowed-headers: "*"
+      max-age: 3600
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 5000
+      database: 0
+      password:
+      lettuce:
+        pool:
+          max-active: 200
+          max-wait: -1ms
+          max-idle: 10
+          min-idle: 0
+
+
+# MyBatis-Plus配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+logging:
+  level:
+    com.travelplanner: INFO
