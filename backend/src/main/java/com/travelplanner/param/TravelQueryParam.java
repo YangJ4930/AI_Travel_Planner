@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class TravelQueryParam {
 
-    public String query;
+    private String query;
 
 }
