@@ -1,4 +1,4 @@
-package property;
+package com.travelplanner.property;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

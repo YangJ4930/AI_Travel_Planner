@@ -107,6 +107,13 @@
             <version>1.5.5.Final</version>
         </dependency>
 
+        <!-- FastJSON -->
+        <!-- Fastjson2 JSON处理库 -->
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <version>2.0.53</version>
+        </dependency>
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

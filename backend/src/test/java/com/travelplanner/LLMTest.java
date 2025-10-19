@@ -2,6 +2,8 @@ package com.travelplanner;
 
 import java.util.Arrays;
 import java.lang.System;
+import java.util.List;
+
 import com.alibaba.dashscope.aigc.generation.Generation;
 import com.alibaba.dashscope.aigc.generation.GenerationParam;
 import com.alibaba.dashscope.aigc.generation.GenerationResult;
@@ -13,11 +15,26 @@ import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.alibaba.dashscope.common.ResponseFormat;
 import com.alibaba.dashscope.utils.Constants;
 
+import com.travelplanner.dto.TravelPlanDto;
+import com.travelplanner.wrapper.LLMTravelPlanWrapper;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class LLMTest {
+
+    @Resource
+    LLMTravelPlanWrapper llmTravelPlanWrapper;
+
+    @Test
+    void testDto(){
+        List<TravelPlanDto> travelPlanDtoList = llmTravelPlanWrapper.llmPlan("我想去南京玩三天，预算3000，爱好是历史文化，给我多推荐两个景点和好一点的酒店");
+        for(TravelPlanDto travelPlanDto: travelPlanDtoList){
+            System.out.println(travelPlanDto.toString());
+        }
+    }
+
 
     public static GenerationResult callWithMessage() throws ApiException, NoApiKeyException, InputRequiredException {
         Generation gen = new Generation();

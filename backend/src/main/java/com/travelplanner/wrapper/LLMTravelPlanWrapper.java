@@ -3,24 +3,60 @@ package com.travelplanner.wrapper;
 import com.alibaba.dashscope.aigc.generation.Generation;
 import com.alibaba.dashscope.aigc.generation.GenerationParam;
 import com.alibaba.dashscope.aigc.generation.GenerationResult;
+import com.alibaba.dashscope.aigc.generation.models.QwenParam;
 import com.alibaba.dashscope.common.Message;
 import com.alibaba.dashscope.common.ResponseFormat;
 import com.alibaba.dashscope.common.Role;
 import com.alibaba.dashscope.exception.ApiException;
 import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.travelplanner.dto.TravelPlanDto;
+import com.travelplanner.property.LLMProperty;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import property.LLMProperty;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
+@Slf4j
 @Service
 public class LLMTravelPlanWrapper {
 
-
     @Resource
     LLMProperty llmProperty;
+
+    public List<TravelPlanDto> llmPlan(String query) {
+        try {
+            log.info("开始调用LLM生成旅行计划，查询内容: {}", query);
+            GenerationResult generationResult = callWithMessage(query);
+            String content = generationResult.getOutput().getChoices().get(0).getMessage().getContent();
+            log.info("LLM返回内容: {}", content);
+            
+            // 使用FastJSON解析返回的JSON字符串
+            JSONArray jsonArray = JSON.parseArray(content);
+            List<TravelPlanDto> travelPlans = jsonArray.toJavaList(TravelPlanDto.class);
+            
+            log.info("成功解析出{}个旅行计划", travelPlans.size());
+            return travelPlans;
+            
+        } catch (ApiException e) {
+            log.error("调用LLM API失败: {}", e.getMessage(), e);
+            return Collections.emptyList();
+        } catch (NoApiKeyException e) {
+            log.error("LLM API Key未配置或无效: {}", e.getMessage(), e);
+            return Collections.emptyList();
+        } catch (InputRequiredException e) {
+            log.error("LLM输入参数不完整: {}", e.getMessage(), e);
+            return Collections.emptyList();
+        } catch (Exception e) {
+            log.error("解析LLM返回结果失败: {}", e.getMessage(), e);
+            return Collections.emptyList();
+        }
+    }
 
     private GenerationResult callWithMessage(String query) throws ApiException, NoApiKeyException, InputRequiredException {
         Generation gen = new Generation();
@@ -131,5 +167,4 @@ public class LLMTravelPlanWrapper {
                 .build();
         return gen.call(param);
     }
-
 }
