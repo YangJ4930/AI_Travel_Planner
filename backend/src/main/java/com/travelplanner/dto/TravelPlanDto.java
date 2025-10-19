@@ -1,20 +1,13 @@
 package com.travelplanner.dto;
 
 import lombok.Data;
+import java.util.List;
 
 @Data
 public class TravelPlanDto {
 
-    private String city;
+    private String title;
 
-    private String date;
-
-    private String keyword;
-
-    private String reason;
-
-    private Double cost;
-
-    private String travel;
+    private List<TravelPlanContentDto> content;
 
 }
