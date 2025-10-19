@@ -17,7 +17,7 @@ request.interceptors.request.use(
     // 添加认证token
     const token = localStorage.getItem('token')
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.satoken = token
     }
     
     // 添加请求时间戳，防止缓存
@@ -46,13 +46,21 @@ request.interceptors.response.use(
       return response
     }
     
-    // 检查业务状态码
-    if (data.success) {
-      return data
-    } else {
-      // 业务错误处理
+    // 兼容后端统一响应：code === 0 表示成功
+    if (typeof data?.code === 'number') {
+      if (data.code === 0) {
+        return data
+      }
       ElMessage.error(data.message || '请求失败')
       return Promise.reject(new Error(data.message || '请求失败'))
+    }
+    
+    // 兼容旧版 success 布尔返回
+    if ((data as any)?.success) {
+      return data
+    } else {
+      ElMessage.error((data as any)?.message || '请求失败')
+      return Promise.reject(new Error((data as any)?.message || '请求失败'))
     }
   },
   (error) => {
@@ -72,7 +80,6 @@ request.interceptors.response.use(
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         ElMessage.error('登录已过期，请重新登录')
-        // 这里可以添加路由跳转逻辑
         window.location.href = '/login'
         break
       case 403:

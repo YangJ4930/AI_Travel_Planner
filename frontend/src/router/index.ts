@@ -46,6 +46,25 @@ const router = createRouter({
       component: () => import('@/views/plans/CreatePlanView.vue'),
       meta: { requiresAuth: true }
     },
+    // 新的旅行计划路由
+    {
+      path: '/travel-plans',
+      name: 'travel-plans',
+      component: () => import('@/views/TravelPlanList.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/travel-plans/create',
+      name: 'travel-plan-create',
+      component: () => import('@/views/TravelPlanCreate.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/travel-plans/:id',
+      name: 'travel-plan-detail',
+      component: () => import('@/views/TravelPlanDetail.vue'),
+      meta: { requiresAuth: true }
+    },
     {
       path: '/about',
       name: 'about',
