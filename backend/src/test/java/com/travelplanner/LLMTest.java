@@ -16,10 +16,13 @@ import com.alibaba.dashscope.common.ResponseFormat;
 import com.alibaba.dashscope.utils.Constants;
 
 import com.travelplanner.dto.TravelPlanDto;
+import com.travelplanner.param.TravelQueryParam;
+import com.travelplanner.service.TravelPlanService;
 import com.travelplanner.wrapper.LLMTravelPlanWrapper;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest
 public class LLMTest {
@@ -27,12 +30,21 @@ public class LLMTest {
     @Resource
     LLMTravelPlanWrapper llmTravelPlanWrapper;
 
+    @Resource
+    TravelPlanService travelPlanService;
+
     @Test
     void testDto(){
-        List<TravelPlanDto> travelPlanDtoList = llmTravelPlanWrapper.llmPlan("我想去南京玩三天，预算3000，爱好是历史文化，给我多推荐两个景点和好一点的酒店");
-        for(TravelPlanDto travelPlanDto: travelPlanDtoList){
-            System.out.println(travelPlanDto.toString());
-        }
+        TravelPlanDto travelPlanDto = llmTravelPlanWrapper.llmPlan("我想去南京玩三天，预算3000，爱好是历史文化，给我多推荐两个景点和好一点的酒店");
+        System.out.println(travelPlanDto.toString());
+    }
+
+    @Test
+    @Rollback
+    void testAdd(){
+        TravelQueryParam travelQueryParam = new TravelQueryParam();
+        travelQueryParam.setQuery("我想去日本玩11天，预算你给我定，我要求有三个城市，东京，京都，和札幌，你会怎么推荐？");
+        travelPlanService.addTravelPlan(travelQueryParam, 1L);
     }
 
 
