@@ -105,14 +105,14 @@
             欢迎回来，{{ authStore.user?.username }}！
           </h2>
           <p class="text-gray-600">
-            今天是个适合规划旅行的好日子 ✈️
+            今天是个适合规划旅行的日子 ✈️
           </p>
         </div>
 
         <!-- 快速操作 -->
         <div class="quick-actions mb-8">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <el-card class="action-card cursor-pointer hover:shadow-lg transition-shadow" @click="$router.push('/plans/create')">
+            <el-card class="action-card cursor-pointer hover:shadow-lg transition-shadow" @click="$router.push('/travel-plans/create')">
               <div class="flex items-center space-x-3">
                 <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
                   <el-icon class="text-xl text-primary-600"><Plus /></el-icon>
@@ -220,7 +220,7 @@
         <div class="recent-plans-section">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold text-gray-800">最近的旅行计划</h3>
-            <el-button type="primary" @click="$router.push('/plans')">
+            <el-button type="primary" @click="$router.push('/travel-plans')">
               查看全部
             </el-button>
           </div>
@@ -230,7 +230,7 @@
               v-for="plan in recentPlans" 
               :key="plan.id"
               class="plan-card cursor-pointer hover:shadow-lg transition-shadow"
-              @click="$router.push(`/plans/${plan.id}`)"
+              @click="$router.push(`/travel-plans/${plan.id}`)"
             >
               <div class="plan-header mb-4">
                 <div class="flex items-center justify-between">
@@ -272,7 +272,7 @@
             <el-icon class="text-6xl text-gray-300 mb-4"><Document /></el-icon>
             <h3 class="text-lg font-semibold text-gray-600 mb-2">还没有旅行计划</h3>
             <p class="text-gray-500 mb-6">创建您的第一个旅行计划，开始精彩的旅程吧！</p>
-            <el-button type="primary" @click="$router.push('/plans/create')">
+            <el-button type="primary" @click="$router.push('/travel-plans/create')">
               <el-icon class="mr-2"><Plus /></el-icon>
               创建计划
             </el-button>
@@ -395,7 +395,7 @@ const handleMenuSelect = (index: string) => {
       // 当前页面，不需要跳转
       break
     case 'plans':
-      router.push('/plans')
+      router.push('/travel-plans')
       break
     case 'ai-assistant':
       router.push('/ai-assistant')

@@ -766,7 +766,7 @@ const createPlan = async () => {
     await new Promise(resolve => setTimeout(resolve, 2000))
     
     ElMessage.success('旅行计划创建成功！')
-    router.push('/plans')
+    router.push('/travel-plans')
   } catch (error) {
     ElMessage.error('创建失败')
   } finally {

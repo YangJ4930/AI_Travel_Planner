@@ -48,7 +48,7 @@
           </el-button-group>
           
           <!-- 创建新计划 -->
-          <el-button type="primary" @click="$router.push('/plans/create')">
+          <el-button type="primary" @click="$router.push('/travel-plans/create')">
             <el-icon class="mr-2"><Plus /></el-icon>
             创建计划
           </el-button>
@@ -296,7 +296,7 @@
           <p class="text-gray-500 mb-6">
             {{ searchQuery || statusFilter ? '尝试调整搜索条件或筛选器' : '创建您的第一个旅行计划，开始精彩的旅程吧！' }}
           </p>
-          <el-button v-if="!searchQuery && !statusFilter" type="primary" @click="$router.push('/plans/create')">
+          <el-button v-if="!searchQuery && !statusFilter" type="primary" @click="$router.push('/travel-plans/create')">
             <el-icon class="mr-2"><Plus /></el-icon>
             创建计划
           </el-button>

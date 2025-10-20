@@ -60,7 +60,7 @@
         <el-button 
           v-if="authStore.isAuthenticated" 
           type="primary" 
-          @click="$router.push('/plans/create')"
+          @click="$router.push('/travel-plans/create')"
           class="hidden md:flex"
         >
           <el-icon class="mr-2"><Plus /></el-icon>
@@ -167,7 +167,7 @@
           <el-button 
             type="primary" 
             class="w-full"
-            @click="$router.push('/plans/create')"
+            @click="$router.push('/travel-plans/create')"
           >
             <el-icon class="mr-2"><Plus /></el-icon>
             创建计划
@@ -344,7 +344,7 @@ const handleMenuSelect = (index: string) => {
       router.push('/dashboard')
       break
     case 'plans':
-      router.push('/plans')
+      router.push('/travel-plans')
       break
     case 'ai-assistant':
       router.push('/ai-assistant')

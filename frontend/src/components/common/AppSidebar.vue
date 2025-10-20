@@ -118,7 +118,7 @@
           <el-button 
             type="primary" 
             class="w-full"
-            @click="$router.push('/plans/create')"
+            @click="$router.push('/travel-plans/create')"
           >
             <el-icon class="mr-2"><Plus /></el-icon>
             创建计划
@@ -171,7 +171,7 @@
           <el-button 
             text 
             class="w-full text-xs"
-            @click="$router.push('/plans')"
+            @click="$router.push('/travel-plans')"
           >
             查看全部计划
           </el-button>
@@ -427,7 +427,7 @@ const handleMenuSelect = (index: string) => {
       router.push('/dashboard')
       break
     case 'plans':
-      router.push('/plans')
+      router.push('/travel-plans')
       break
     case 'ai-assistant':
       router.push('/ai-assistant')

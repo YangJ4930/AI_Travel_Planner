@@ -34,18 +34,7 @@ const router = createRouter({
       component: () => import('@/views/PlanningView.vue'),
       meta: { requiresAuth: true }
     },
-    {
-      path: '/plans',
-      name: 'plans',
-      component: () => import('@/views/plans/PlansListView.vue'),
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/plans/create',
-      name: 'create-plan',
-      component: () => import('@/views/plans/CreatePlanView.vue'),
-      meta: { requiresAuth: true }
-    },
+
     // 新的旅行计划路由
     {
       path: '/travel-plans',
