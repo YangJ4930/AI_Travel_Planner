@@ -24,15 +24,28 @@
           <!-- 输入区域（非对话，仅用于创建新计划） -->
           <div class="input-section bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">描述你的旅行需求</h2>
-            <el-input
-              v-model="travelInput"
-              type="textarea"
-              :rows="5"
-              placeholder="例如：目的地、天数、预算、偏好、同行人数等。提交后将在下方生成一张计划卡片。"
-              class="planning-textarea"
-              maxlength="1000"
-              show-word-limit
-            />
+            <div class="relative">
+              <el-input
+                v-model="travelInput"
+                type="textarea"
+                :rows="10"
+                placeholder="例如：目的地、天数、预算、偏好、同行人数等。提交后将在下方生成一张计划卡片。&#10;&#10;💡 提示：您也可以点击右下角的语音按钮进行语音输入"
+                class="planning-textarea"
+                maxlength="1000"
+                show-word-limit
+              />
+              <!-- 语音输入按钮 -->
+              <div class="absolute bottom-2 right-12 z-10">
+                <VoiceInput
+                  placeholder="点击开始语音输入旅行需求"
+                  :continuous="true"
+                  @result="handleVoiceResult"
+                  @start="handleVoiceStart"
+                  @end="handleVoiceEnd"
+                  @error="handleVoiceError"
+                />
+              </div>
+            </div>
             <div class="flex justify-end mt-3 space-x-3">
               <el-button @click="clearInput">清空</el-button>
               <el-button type="primary" @click="submitQuery" :loading="isGenerating" :disabled="!travelInput.trim()">
@@ -109,6 +122,7 @@ import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
 import { travelPlanApi, type TravelPlanVo } from '@/services/travelPlan'
 import { LocationFilled, ArrowRight } from '@element-plus/icons-vue'
+import VoiceInput from '@/components/common/VoiceInput.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -161,7 +175,7 @@ const submitQuery = async () => {
 
 const goBackToRedirect = () => {
   const redirect = (route.query.redirect as string) || '/travel-plans'
-  router.push(redirect)
+  router.replace(redirect)
 }
 
 const refreshPlans = async () => {
@@ -190,6 +204,33 @@ const extractTags = (query: string): string[] => {
     .split(/[\s,，;；]+/)
     .filter(t => t && t.length > 0)
     .slice(0, 5)
+}
+
+// 语音输入处理方法
+const handleVoiceResult = (text: string) => {
+  console.log('语音识别结果:', text)
+  if (text.trim()) {
+    // 如果已有内容，在后面追加；否则直接设置
+    if (travelInput.value.trim()) {
+      travelInput.value += ' ' + text
+    } else {
+      travelInput.value = text
+    }
+    ElMessage.success('语音输入成功')
+  }
+}
+
+const handleVoiceStart = () => {
+  console.log('开始语音输入')
+}
+
+const handleVoiceEnd = () => {
+  console.log('语音输入结束')
+}
+
+const handleVoiceError = (error: string) => {
+  console.error('语音输入错误:', error)
+  ElMessage.error(`语音输入失败: ${error}`)
 }
 </script>
 
