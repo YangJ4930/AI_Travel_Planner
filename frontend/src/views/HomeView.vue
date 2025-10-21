@@ -17,7 +17,7 @@ const featuresSection = ref<HTMLElement>()
 
 const startPlanning = () => {
   if (authStore.isAuthenticated) {
-    router.push('/travel-plans/create')
+    router.push('/planning')
   } else {
     router.push('/login')
   }

@@ -291,7 +291,7 @@ const fetchPlanDetail = async () => {
 
 // 返回列表
 const goBack = () => {
-  router.push('/travel-plans')
+  router.replace({ name: 'travel-plans' })
 }
 
 // 编辑计划

@@ -45,7 +45,7 @@
       <!-- 右侧：搜索、通知、用户菜单 -->
       <div class="header-right flex items-center space-x-4">
         <!-- 搜索框 (仅在已登录时显示) -->
-        <div v-if="authStore.isAuthenticated" class="search-box hidden lg:block">
+        <div v-if="authStore.isAuthenticated" class="search-box hidden lg:block relative">
           <el-input
             v-model="searchQuery"
             placeholder="搜索旅行计划、目的地..."
@@ -54,6 +54,18 @@
             clearable
             @keyup.enter="handleSearch"
           />
+          <!-- 语音搜索按钮 -->
+          <div class="absolute right-2 top-1/2 transform -translate-y-1/2 z-10">
+            <VoiceInput
+              placeholder="点击开始语音搜索"
+              :useCloud="true"
+              :continuous="false"
+              @result="handleVoiceSearchResult"
+              @start="handleVoiceStart"
+              @end="handleVoiceEnd"
+              @error="handleVoiceError"
+            />
+          </div>
         </div>
         
         <!-- 快速创建按钮 (仅在已登录时显示) -->
@@ -239,6 +251,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
+import VoiceInput from './VoiceInput.vue'
 import {
   Location,
   Search,
@@ -438,6 +451,33 @@ const formatTime = (time: string) => {
   } else {
     return `${days}天前`
   }
+}
+
+// 语音搜索处理方法
+const handleVoiceSearchResult = (text: string) => {
+  if (text.trim()) {
+    // 如果搜索框为空，直接设置语音识别结果
+    if (!searchQuery.value.trim()) {
+      searchQuery.value = text
+    } else {
+      // 如果搜索框有内容，追加语音识别结果
+      searchQuery.value += ' ' + text
+    }
+    // 自动执行搜索
+    handleSearch()
+  }
+}
+
+const handleVoiceStart = () => {
+  console.log('开始语音搜索...')
+}
+
+const handleVoiceEnd = () => {
+  console.log('语音搜索结束')
+}
+
+const handleVoiceError = (error: string) => {
+  ElMessage.error(`语音搜索失败: ${error}`)
 }
 
 // 组件挂载

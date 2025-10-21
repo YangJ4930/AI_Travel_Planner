@@ -19,15 +19,28 @@
 
           <el-form :model="form" :rules="rules" ref="formRef" label-width="120px">
             <el-form-item label="旅行描述" prop="query">
-              <el-input
-                v-model="form.query"
-                type="textarea"
-                :rows="6"
-                placeholder="请详细描述您的旅行需求，例如：&#10;我想在春节期间和家人去三亚度假，预算1万元，希望住海景房，体验当地美食和水上运动..."
-                maxlength="500"
-                show-word-limit
-                class="w-full"
-              />
+              <div class="relative">
+                <el-input
+                  v-model="form.query"
+                  type="textarea"
+                  :rows="10"
+                  placeholder="请详细描述您的旅行需求，例如：&#10;我想在春节期间和家人去三亚度假，预算1万元，希望住海景房，体验当地美食和水上运动...&#10;&#10;💡 提示：您也可以点击右下角的语音按钮进行语音输入"
+                  maxlength="1000"
+                  show-word-limit
+                  class="w-full"
+                />
+                <!-- 语音输入按钮 -->
+                <div class="absolute bottom-2 right-12 z-10">
+                  <VoiceInput
+                    placeholder="点击开始语音输入旅行需求"
+                    :continuous="true"
+                    @result="handleVoiceResult"
+                    @start="handleVoiceStart"
+                    @end="handleVoiceEnd"
+                    @error="handleVoiceError"
+                  />
+                </div>
+              </div>
             </el-form-item>
 
             <!-- 示例提示 -->
@@ -54,14 +67,16 @@
                   :loading="loading"
                   @click="generatePlan"
                   class="px-8 py-3"
+                  :disabled="loading"
                 >
-                  <el-icon class="mr-2"><Magic /></el-icon>
-                  {{ loading ? '正在生成计划...' : '生成旅行计划' }}
+                  <el-icon v-if="!loading" class="mr-2"><MagicStick /></el-icon>
+                  {{ getGenerateButtonText }}
                 </el-button>
                 <el-button 
                   size="large"
                   @click="resetForm"
                   class="px-8 py-3"
+                  :disabled="loading"
                 >
                   重置
                 </el-button>
@@ -104,11 +119,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { LocationFilled, Magic, SuccessFilled, CircleCheckFilled } from '@element-plus/icons-vue'
+import { LocationFilled, MagicStick, SuccessFilled, CircleCheckFilled } from '@element-plus/icons-vue'
 import { travelPlanApi, type TravelQueryParam } from '@/services/travelPlan'
+import VoiceInput from '@/components/common/VoiceInput.vue'
 
 const router = useRouter()
 
@@ -155,11 +171,22 @@ const useExample = (content: string) => {
   form.query = content
 }
 
+// 计算属性：生成按钮文字
+const getGenerateButtonText = computed(() => {
+  if (loading.value) {
+    return '正在生成，请等待...'
+  }
+  return '生成旅行计划'
+})
+
 // 生成计划
 const generatePlan = async () => {
   try {
     await formRef.value?.validate()
     loading.value = true
+    
+    // 显示开始生成的提示
+    ElMessage.info('开始生成旅行计划，请耐心等待...')
     
     // 调用后端API生成计划
     const response = await travelPlanApi.addTravelPlan(form)
@@ -208,6 +235,33 @@ const viewPlanDetail = (id: number) => {
 const createAnother = () => {
   generatedPlan.value = null
   resetForm()
+}
+
+// 语音输入处理方法
+const handleVoiceResult = (text: string) => {
+  console.log('语音识别结果:', text)
+  if (text.trim()) {
+    // 如果已有内容，在后面追加；否则直接设置
+    if (form.query.trim()) {
+      form.query += ' ' + text
+    } else {
+      form.query = text
+    }
+    ElMessage.success('语音输入成功')
+  }
+}
+
+const handleVoiceStart = () => {
+  console.log('开始语音输入')
+}
+
+const handleVoiceEnd = () => {
+  console.log('语音输入结束')
+}
+
+const handleVoiceError = (error: string) => {
+  console.error('语音输入错误:', error)
+  ElMessage.error(`语音输入失败: ${error}`)
 }
 </script>
 
