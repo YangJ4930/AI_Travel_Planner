@@ -41,6 +41,7 @@ config/api-keys.json
 config/secrets.json
 application-secrets.yml
 application-secrets.properties
+secrets.yml
 
 # 证书文件
 *.pem
