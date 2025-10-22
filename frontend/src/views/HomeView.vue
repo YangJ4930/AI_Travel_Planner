@@ -64,9 +64,8 @@ const handleUserCommand = (command: string) => {
             </el-button>
           </template>
           <template v-else>
-            <el-button type="primary" @click="$router.push('/dashboard')">
-              进入控制台
-            </el-button>
+            <!-- 删除：进入控制台按钮 -->
+            <!-- 保留用户下拉菜单 -->
             <el-dropdown @command="handleUserCommand">
               <span class="el-dropdown-link flex items-center cursor-pointer">
                 <el-avatar :size="32" :src="authStore.user?.avatar">
@@ -101,9 +100,7 @@ const handleUserCommand = (command: string) => {
             <el-icon class="mr-2"><Plus /></el-icon>
             开始规划旅行
           </el-button>
-          <el-button size="large" @click="scrollToFeatures" class="px-8 py-3">
-            了解更多
-          </el-button>
+          <!-- 删除：了解更多按钮 -->
         </div>
       </div>
     </section>

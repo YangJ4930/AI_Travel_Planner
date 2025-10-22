@@ -6,6 +6,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8080/api
     ports:
       - "3000:80"
     environment:
@@ -25,7 +27,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DB_HOST=database
-      - DB_PORT=5432
+      - DB_PORT=3306
       - DB_NAME=travel_planner
       - DB_USERNAME=${DB_USERNAME:-travel_user}
       - DB_PASSWORD=${DB_PASSWORD:-travel_password}
@@ -36,6 +38,8 @@ services:
       - XUNFEI_APP_ID=${XUNFEI_APP_ID}
       - XUNFEI_API_SECRET=${XUNFEI_API_SECRET}
       - XUNFEI_API_KEY=${XUNFEI_API_KEY}
+      - LLM_API_KEY=${LLM_API_KEY}
+      - LLM_MODEL=${LLM_MODEL:-qwen-plus}
       - ALIBABA_CLOUD_ACCESS_KEY_ID=${ALIBABA_CLOUD_ACCESS_KEY_ID}
       - ALIBABA_CLOUD_ACCESS_KEY_SECRET=${ALIBABA_CLOUD_ACCESS_KEY_SECRET}
     depends_on:
@@ -48,16 +52,18 @@ services:
 
   # 数据库服务
   database:
-    image: postgres:13-alpine
+    image: mysql:8.0
     environment:
-      - POSTGRES_DB=travel_planner
-      - POSTGRES_USER=${DB_USERNAME:-travel_user}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-travel_password}
+      - MYSQL_DATABASE=travel_planner
+      - MYSQL_USER=${DB_USERNAME:-travel_user}
+      - MYSQL_PASSWORD=${DB_PASSWORD:-travel_password}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-travel_password}
     ports:
-      - "5432:5432"
+      - "3307:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./backend/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
+      - ./backend/sql/create.sql:/docker-entrypoint-initdb.d/create.sql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     networks:
       - travel-planner-network
 
@@ -90,7 +96,7 @@ services:
       - production
 
 volumes:
-  postgres_data:
+  mysql_data:
   redis_data:
 
 networks:

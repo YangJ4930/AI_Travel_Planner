@@ -238,15 +238,68 @@ const createAnother = () => {
 }
 
 // 语音输入处理方法
+let lastVoiceResult = ''
+let lastVoiceTime = 0
+const VOICE_DEBOUNCE_TIME = 1000 // 1秒防抖
+
 const handleVoiceResult = (text: string) => {
   console.log('语音识别结果:', text)
-  if (text.trim()) {
-    // 如果已有内容，在后面追加；否则直接设置
-    if (form.query.trim()) {
-      form.query += ' ' + text
-    } else {
-      form.query = text
+  
+  if (!text || !text.trim()) {
+    return
+  }
+  
+  const newText = text.trim()
+  const currentTime = Date.now()
+  
+  // 防抖：如果是相同内容且时间间隔很短，则跳过
+  if (newText === lastVoiceResult && (currentTime - lastVoiceTime) < VOICE_DEBOUNCE_TIME) {
+    console.log('防抖跳过重复语音输入:', newText)
+    return
+  }
+  
+  lastVoiceResult = newText
+  lastVoiceTime = currentTime
+  
+  const currentQuery = form.query.trim()
+  
+  // 检查是否为完全重复内容
+  if (currentQuery && currentQuery.includes(newText)) {
+    console.log('检测到重复内容，跳过添加:', newText)
+    return
+  }
+  
+  // 检查新文本是否与当前内容的末尾部分重复
+  if (currentQuery) {
+    const currentWords = currentQuery.split(/\s+/)
+    const newWords = newText.split(/\s+/)
+    
+    // 查找重复的部分 - 更精确的重复检测
+    let overlapIndex = -1
+    for (let i = 0; i < newWords.length; i++) {
+      const suffix = newWords.slice(i).join(' ')
+      if (currentQuery.endsWith(suffix)) {
+        overlapIndex = i
+        break
+      }
     }
+    
+    if (overlapIndex > 0) {
+      // 只添加非重复的部分
+      const uniquePart = newWords.slice(0, overlapIndex).join(' ')
+      if (uniquePart) {
+        form.query = currentQuery + ' ' + uniquePart
+        ElMessage.success('语音输入成功')
+      }
+    } else if (overlapIndex === -1) {
+      // 没有重复，正常添加
+      form.query = currentQuery + ' ' + newText
+      ElMessage.success('语音输入成功')
+    }
+    // overlapIndex === 0 表示完全重复，不添加任何内容
+  } else {
+    // 第一次输入
+    form.query = newText
     ElMessage.success('语音输入成功')
   }
 }

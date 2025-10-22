@@ -59,23 +59,18 @@
           <!-- 主要功能 -->
           <div v-if="!collapsed" class="menu-group-title">主要功能</div>
           
-          <el-menu-item index="dashboard">
-            <el-icon><Odometer /></el-icon>
-            <template #title>仪表板</template>
-          </el-menu-item>
-          
           <el-menu-item index="plans">
             <el-icon><MapLocation /></el-icon>
             <template #title>我的计划</template>
           </el-menu-item>
           
           <el-menu-item index="ai-assistant">
-            <el-icon><BrainFilled /></el-icon>
+            <el-icon><MagicStick /></el-icon>
             <template #title>AI助手</template>
           </el-menu-item>
           
           <el-menu-item index="map">
-            <el-icon><Map /></el-icon>
+            <el-icon><Location /></el-icon>
             <template #title>地图探索</template>
           </el-menu-item>
           
@@ -128,7 +123,7 @@
             class="w-full"
             @click="$router.push('/ai-assistant')"
           >
-            <el-icon class="mr-2"><BrainFilled /></el-icon>
+            <el-icon class="mr-2"><MagicStick /></el-icon>
             AI助手
           </el-button>
         </div>
@@ -272,8 +267,8 @@ import {
   Fold,
   Odometer,
   MapLocation,
-  BrainFilled,
-  Map,
+  MagicStick,
+  Location,
   Wallet,
   Star,
   Share,
@@ -392,9 +387,7 @@ watch(
 
 // 方法
 const updateActiveMenu = (path: string) => {
-  if (path.startsWith('/dashboard')) {
-    activeMenu.value = 'dashboard'
-  } else if (path.startsWith('/plans')) {
+  if (path.startsWith('/travel-plans')) {
     activeMenu.value = 'plans'
   } else if (path.startsWith('/ai-assistant')) {
     activeMenu.value = 'ai-assistant'
@@ -423,9 +416,6 @@ const handleMenuSelect = (index: string) => {
   activeMenu.value = index
   
   switch (index) {
-    case 'dashboard':
-      router.push('/dashboard')
-      break
     case 'plans':
       router.push('/travel-plans')
       break

@@ -242,17 +242,9 @@ const initVoiceRecognition = async () => {
     emit('error', errorMessage)
   })
 
-  a.addCallback('result', (phrases: string[]) => {
-    console.log('语音识别候选结果:', phrases)
-    // 选择第一条作为最佳结果并发出一次
-    if (phrases && phrases.length > 0) {
-      const bestResult = phrases[0]
-      emit('result', bestResult)
-      if (!props.continuous) {
-        stopListening()
-      }
-    }
-  })
+  // 移除重复的 result 回调，避免双重触发
+  // 因为 '*text' 命令已经处理了结果，不需要再次处理 result 事件
+  // a.addCallback('result', ...) - 已注释掉避免重复触发
 
   return true
 }
@@ -600,6 +592,12 @@ const recognizeRecording = async () => {
     return
   }
   
+  // 防止重复调用
+  if (isRecognizing.value || isTranslating.value) {
+    console.log('正在处理中，跳过重复调用')
+    return
+  }
+  
   try {
     // 第一阶段：语音识别
     isRecognizing.value = true
@@ -627,7 +625,8 @@ const recognizeRecording = async () => {
     // 模拟翻译处理时间（实际项目中这里可能是调用翻译API）
     await new Promise(resolve => setTimeout(resolve, 1000))
     
-    // 翻译完成，返回结果
+    // 翻译完成，返回结果 - 只触发一次
+    console.log('语音识别完成，发送结果:', recognizedText)
     emit('result', recognizedText)
     ElMessage.success('语音识别和翻译完成')
     

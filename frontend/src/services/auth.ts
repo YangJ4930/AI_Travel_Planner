@@ -19,6 +19,19 @@ authAxios.interceptors.request.use(
     if (token) {
       config.headers.satoken = token
     }
+
+    // 覆盖 baseURL（来自设置页）
+    const apiBase = localStorage.getItem('apiBase')
+    if (apiBase) {
+      config.baseURL = apiBase
+    }
+
+    // 注入 API Key
+    const apiKey = localStorage.getItem('apiKey')
+    if (apiKey) {
+      (config.headers as any)['X-Api-Key'] = apiKey
+    }
+
     return config
   },
   (error) => {

@@ -22,12 +22,7 @@ const router = createRouter({
       component: () => import('@/views/auth/RegisterView.vue'),
       meta: { requiresAuth: false, hideForAuth: true }
     },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: () => import('@/views/DashboardView.vue'),
-      meta: { requiresAuth: true }
-    },
+
     {
       path: '/planning',
       name: 'planning',
@@ -61,6 +56,12 @@ const router = createRouter({
       meta: { requiresAuth: false }
     },
     {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('@/views/SettingsView.vue'),
+      meta: { requiresAuth: false }
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
       redirect: '/'
@@ -78,9 +79,9 @@ router.beforeEach(async (to, from, next) => {
     return
   }
   
-  // 已登录用户访问登录/注册页面时重定向到仪表板
+  // 已登录用户访问登录/注册页面时重定向到旅行计划页面
   if (to.meta.hideForAuth && authStore.isAuthenticated) {
-    next({ name: 'dashboard' })
+    next({ name: 'travel-plans' })
     return
   }
   
@@ -88,3 +89,4 @@ router.beforeEach(async (to, from, next) => {
 })
 
 export default router
+

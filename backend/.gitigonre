@@ -38,7 +38,7 @@ target/
 src/main/resources/static
 /file_cache/
 /logs/
-/src/main/resources/application-dev.yml
+src/main/resources/application-dev.yml
 /log.path_IS_UNDEFINED/
 
 ### macOS ###

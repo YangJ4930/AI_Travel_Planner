@@ -235,7 +235,7 @@ const handleCloseForgotPassword = () => {
 // 组件挂载时检查是否已登录
 onMounted(() => {
   if (authStore.isAuthenticated) {
-    router.push('/dashboard')
+    router.push('/travel-plans')
   }
 })
 </script>

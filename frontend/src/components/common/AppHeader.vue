@@ -19,23 +19,18 @@
             class="border-none bg-transparent"
             @select="handleMenuSelect"
           >
-            <el-menu-item index="dashboard">
-              <el-icon><Odometer /></el-icon>
-              <span>仪表板</span>
-            </el-menu-item>
-            
             <el-menu-item index="plans">
               <el-icon><MapLocation /></el-icon>
               <span>我的计划</span>
             </el-menu-item>
             
             <el-menu-item index="ai-assistant">
-              <el-icon><BrainFilled /></el-icon>
+              <el-icon><MagicStick /></el-icon>
               <span>AI助手</span>
             </el-menu-item>
             
             <el-menu-item index="map">
-              <el-icon><Map /></el-icon>
+              <el-icon><Location /></el-icon>
               <span>地图探索</span>
             </el-menu-item>
           </el-menu>
@@ -265,8 +260,8 @@ import {
   Menu,
   Odometer,
   MapLocation,
-  BrainFilled,
-  Map,
+  MagicStick,
+  Location,
   // 通知图标
   InfoFilled,
   WarningFilled,
@@ -314,10 +309,9 @@ const notifications = ref([
 
 // 移动端菜单项
 const mobileMenuItems = [
-  { index: 'dashboard', label: '仪表板', icon: 'Odometer' },
   { index: 'plans', label: '我的计划', icon: 'MapLocation' },
-  { index: 'ai-assistant', label: 'AI助手', icon: 'BrainFilled' },
-  { index: 'map', label: '地图探索', icon: 'Map' }
+  { index: 'ai-assistant', label: 'AI助手', icon: 'MagicStick' },
+  { index: 'map', label: '地图探索', icon: 'Location' }
 ]
 
 // 计算属性
@@ -336,9 +330,7 @@ watch(
 
 // 方法
 const updateActiveMenu = (path: string) => {
-  if (path.startsWith('/dashboard')) {
-    activeMenu.value = 'dashboard'
-  } else if (path.startsWith('/plans')) {
+  if (path.startsWith('/travel-plans')) {
     activeMenu.value = 'plans'
   } else if (path.startsWith('/ai-assistant')) {
     activeMenu.value = 'ai-assistant'
@@ -353,9 +345,6 @@ const handleMenuSelect = (index: string) => {
   activeMenu.value = index
   
   switch (index) {
-    case 'dashboard':
-      router.push('/dashboard')
-      break
     case 'plans':
       router.push('/travel-plans')
       break

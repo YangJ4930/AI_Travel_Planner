@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: travel-planner
+  datasource:
+    url: jdbc:mysql://${DB_HOST:database}:${DB_PORT:3306}/${DB_NAME:travel_planner}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME:travel_user}
+    password: ${DB_PASSWORD:travel_password}
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+      database: 0
+      timeout: 5000
+
+# Optional: third-party keys provided via env
+llm:
+  apiKey: ${LLM_API_KEY:}
+  model: ${LLM_MODEL:qwen-plus}
+
+logging:
+  level:
+    com.travelplanner: INFO
